@@ -1,4 +1,4 @@
-package com.itgonca.pokeapp.ui
+package com.itgonca.pokeapp.ui.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,12 +19,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.itgonca.pokeapp.R
+import com.itgonca.pokeapp.domain.model.Pokemon
 import com.itgonca.pokeapp.ui.components.SearchTextField
 import com.itgonca.pokeapp.ui.theme.PokeAppTheme
 import com.itgonca.pokeapp.ui.theme.PokemonBlue
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(modifier: Modifier = Modifier, list: List<Pokemon>) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -34,8 +36,12 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             columns = GridCells.Fixed(2),
             contentPadding = PaddingValues(PokeAppTheme.dimens.space8)
         ) {
-            items(20) {
-                PokemonItem(modifier = Modifier.padding(PokeAppTheme.dimens.space8))
+            items(list) {
+                PokemonItem(
+                    modifier = Modifier.padding(PokeAppTheme.dimens.space8),
+                    name = it.name,
+                    imageUrl = it.imageUrl
+                )
             }
         }
     }
@@ -74,6 +80,6 @@ private fun HomeHeader(modifier: Modifier = Modifier) {
 @Composable
 private fun HomeScreenPreview() {
     PokeAppTheme {
-        HomeScreen()
+        HomeScreen(list = emptyList())
     }
 }

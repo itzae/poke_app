@@ -1,4 +1,4 @@
-package com.itgonca.pokeapp.ui
+package com.itgonca.pokeapp.ui.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -20,7 +20,7 @@ import com.itgonca.pokeapp.ui.theme.PoisonColor
 import com.itgonca.pokeapp.ui.theme.PokeAppTheme
 
 @Composable
-fun PokemonItem(modifier: Modifier = Modifier) {
+fun PokemonItem(modifier: Modifier = Modifier, name: String, imageUrl: String) {
     Card(
         modifier,
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
@@ -37,16 +37,16 @@ fun PokemonItem(modifier: Modifier = Modifier) {
         }
         AsyncImage(
             modifier = Modifier
-                .size(50.dp)
+                .size(100.dp)
                 .align(Alignment.CenterHorizontally),
-            model = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+            model = imageUrl,
             contentDescription = ""
         )
         Text(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(horizontal = 8.dp),
-            text = "Name pokemon"
+            text = name
         )
     }
 
@@ -56,6 +56,6 @@ fun PokemonItem(modifier: Modifier = Modifier) {
 @Composable
 private fun PokemonItemPreview() {
     PokeAppTheme {
-        PokemonItem()
+        PokemonItem(name="", imageUrl = "")
     }
 }
