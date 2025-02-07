@@ -31,7 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.itgonca.pokeapp.R
-import com.itgonca.pokeapp.ui.PokemonState
+import com.itgonca.pokeapp.ui.PokemonUi
 import com.itgonca.pokeapp.ui.components.ChipCustom
 import com.itgonca.pokeapp.ui.components.StatusBar
 import com.itgonca.pokeapp.ui.theme.PokeAppTheme
@@ -39,7 +39,7 @@ import com.itgonca.pokeapp.ui.theme.PokeAppTheme
 @Composable
 fun DetailScreen(
     modifier: Modifier = Modifier,
-    pokemonState: PokemonState = PokemonState(),
+    pokemonUi: PokemonUi = PokemonUi(),
     onBack: () -> Unit = {}
 ) {
     Scaffold(
@@ -64,11 +64,11 @@ fun DetailScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = pokemonState.name.replaceFirstChar { it.uppercase() },
+                        text = pokemonUi.name.replaceFirstChar { it.uppercase() },
                         style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold)
                     )
                     Row(horizontalArrangement = Arrangement.spacedBy(PokeAppTheme.dimens.space8)) {
-                        pokemonState.types.map {
+                        pokemonUi.types.map {
                             ChipCustom(
                                 text = it.name,
                                 backgroundColor = it.color
@@ -85,7 +85,7 @@ fun DetailScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Column(Modifier.fillMaxWidth(0.5f)) {
-                        pokemonState.stats.map {
+                        pokemonUi.stats.map {
                             StatProgress(
                                 stat = it.name,
                                 value = it.value.toFloat(),
@@ -96,7 +96,7 @@ fun DetailScreen(
                     Box(Modifier.fillMaxWidth(0.5f)) {
                         AsyncImage(
                             modifier = Modifier.size(100.dp),
-                            model = pokemonState.imageUrl,
+                            model = pokemonUi.imageUrl,
                             contentScale = ContentScale.Crop,
                             contentDescription = ""
                         )
@@ -147,6 +147,6 @@ fun StatProgress(stat: String, value: Float, color: Color) {
 @Composable
 private fun DetailScreenPreview() {
     PokeAppTheme {
-        DetailScreen(pokemonState = PokemonState(name = "Charizard", types = listOf()))
+        DetailScreen(pokemonUi = PokemonUi(name = "Charizard", types = listOf()))
     }
 }

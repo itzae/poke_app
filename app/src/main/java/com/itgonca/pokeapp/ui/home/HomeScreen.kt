@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +24,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.itgonca.pokeapp.R
 import com.itgonca.pokeapp.ui.PokemonState
+import com.itgonca.pokeapp.ui.PokemonUi
+import com.itgonca.pokeapp.ui.components.ErrorScreen
+import com.itgonca.pokeapp.ui.components.LoadingScreen
 import com.itgonca.pokeapp.ui.components.SearchTextField
 import com.itgonca.pokeapp.ui.theme.PokeAppTheme
 
@@ -33,18 +37,25 @@ fun HomeScreenRoute(
 ) {
     val pokemonList by viewModel.searchList.collectAsStateWithLifecycle()
     val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
-    HomeScreen(
-        list = pokemonList,
-        query = searchQuery,
-        onSearch = { id -> viewModel.searchPokemon(id) },
-        onNavigateToDetail = onNavigateToDetail
-    )
+    val homeState by viewModel.homeState.collectAsStateWithLifecycle()
+
+    when (homeState) {
+        PokemonState.Loading -> LoadingScreen()
+        is PokemonState.Success -> HomeScreen(
+            list = pokemonList,
+            query = searchQuery,
+            onSearch = { id -> viewModel.searchPokemon(id) },
+            onNavigateToDetail = onNavigateToDetail
+        )
+
+        PokemonState.Error -> ErrorScreen()
+    }
 }
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    list: List<PokemonState>,
+    list: List<PokemonUi>,
     query: String = "",
     onSearch: (String) -> Unit = {},
     onNavigateToDetail: (String) -> Unit = {}
