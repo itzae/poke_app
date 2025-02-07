@@ -1,4 +1,4 @@
-package com.itgonca.pokeapp.data.remote.repository
+package com.itgonca.pokeapp.data.repository
 
 import com.itgonca.pokeapp.data.local.PokemonDao
 import com.itgonca.pokeapp.data.local.toEntity
@@ -11,6 +11,9 @@ import com.itgonca.pokeapp.domain.repository.PokemonRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -42,8 +45,10 @@ class PokemonRepositoryImpl @Inject constructor(
             result
         }
 
-    override suspend fun searchPokemon(pokemonId: String): Flow<List<Pokemon>> {
-        TODO()
-    }
+    override fun searchPokemon(pokemonId: String): Flow<List<Pokemon>> =
+        pokemonDao.getPokemonsById(pokemonId)
+            .map {
+                it.map { pokemonEntity -> pokemonEntity.toPokemonDomain() }
+            }.flowOn(dispatcher)
 
 }

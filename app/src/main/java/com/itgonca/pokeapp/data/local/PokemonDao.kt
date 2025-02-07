@@ -12,6 +12,9 @@ interface PokemonDao {
     fun getAllPokemons(): Flow<List<PokemonEntity>?>
 
     @Query("SELECT * FROM pokemon WHERE name LIKE '%' || :pokemonId || '%'")
+    fun getPokemonsById(pokemonId: String): Flow<List<PokemonEntity>>
+
+    @Query("SELECT * FROM pokemon WHERE name LIKE '%' || :pokemonId || '%'")
     fun getPokemonById(pokemonId: String): Flow<PokemonEntity?>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

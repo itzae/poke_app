@@ -1,6 +1,6 @@
 package com.itgonca.pokeapp.di
 
-import com.itgonca.pokeapp.data.remote.repository.PokemonRepositoryImpl
+import com.itgonca.pokeapp.data.repository.PokemonRepositoryImpl
 import com.itgonca.pokeapp.domain.repository.PokemonRepository
 import dagger.Binds
 import dagger.Module

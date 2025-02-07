@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.androidx.material3)
     //Load images from network
     implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
     //DI libraries
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)

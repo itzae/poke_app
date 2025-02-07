@@ -13,20 +13,40 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.itgonca.pokeapp.R
 import com.itgonca.pokeapp.ui.PokemonState
 import com.itgonca.pokeapp.ui.components.SearchTextField
 import com.itgonca.pokeapp.ui.theme.PokeAppTheme
 
 @Composable
+fun HomeScreenRoute(
+    viewModel: HomeViewModel = hiltViewModel(),
+    onNavigateToDetail: (String) -> Unit
+) {
+    val pokemonList by viewModel.searchList.collectAsStateWithLifecycle()
+    val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
+    HomeScreen(
+        list = pokemonList,
+        query = searchQuery,
+        onSearch = { id -> viewModel.searchPokemon(id) },
+        onNavigateToDetail = onNavigateToDetail
+    )
+}
+
+@Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     list: List<PokemonState>,
+    query: String = "",
+    onSearch: (String) -> Unit = {},
     onNavigateToDetail: (String) -> Unit = {}
 ) {
     Column(
@@ -34,7 +54,7 @@ fun HomeScreen(
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background)
     ) {
-        HomeHeader()
+        HomeHeader(query = query, onSearch = onSearch)
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             contentPadding = PaddingValues(PokeAppTheme.dimens.space8)
@@ -53,7 +73,12 @@ fun HomeScreen(
 }
 
 @Composable
-private fun HomeHeader(modifier: Modifier = Modifier) {
+private fun HomeHeader(
+    modifier: Modifier = Modifier,
+    query: String,
+    onSearch: (String) -> Unit = {}
+) {
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -75,8 +100,10 @@ private fun HomeHeader(modifier: Modifier = Modifier) {
         SearchTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(PokeAppTheme.dimens.space16), query = ""
-        ) { }
+                .padding(PokeAppTheme.dimens.space16),
+            query = query,
+            onQueryChange = onSearch
+        )
 
     }
 }

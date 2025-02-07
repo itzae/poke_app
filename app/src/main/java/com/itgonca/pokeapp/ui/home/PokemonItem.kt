@@ -33,7 +33,7 @@ fun PokemonItem(
     ) {
         Row(
             modifier = Modifier
-                .padding(8.dp)
+                .padding(PokeAppTheme.dimens.space8)
                 .align(Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp)

@@ -10,27 +10,22 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.itgonca.pokeapp.ui.detail.DetailScreen
 import com.itgonca.pokeapp.ui.detail.DetailViewModel
-import com.itgonca.pokeapp.ui.home.HomeScreen
-import com.itgonca.pokeapp.ui.home.HomeViewModel
+import com.itgonca.pokeapp.ui.home.HomeScreenRoute
 
 const val POKEMON_ID = "pokemon_id"
 
 @Composable
 fun PokeAppNavGraph(
     navHostController: NavHostController,
-    viewModel: HomeViewModel = hiltViewModel()
 ) {
     NavHost(navController = navHostController, startDestination = PokeAppScreenRoutes.HomeScreen) {
         composable<PokeAppScreenRoutes.HomeScreen> {
-            val pokemonList by viewModel.pokemonList.collectAsStateWithLifecycle()
-            HomeScreen(
-                list = pokemonList,
+            HomeScreenRoute(
                 onNavigateToDetail = {
                     navHostController.currentBackStackEntry?.savedStateHandle?.set(POKEMON_ID, it)
                     navHostController.navigate(PokeAppScreenRoutes.DetailScreen)
-
-
-                })
+                },
+            )
         }
         composable<PokeAppScreenRoutes.DetailScreen> {
             val detailViewModel: DetailViewModel = hiltViewModel()
