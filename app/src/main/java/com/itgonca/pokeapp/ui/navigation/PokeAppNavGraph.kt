@@ -35,7 +35,7 @@ fun PokeAppNavGraph(
                 detailViewModel.getDetail(id ?: "")
             }
             val state by detailViewModel.detailState.collectAsStateWithLifecycle()
-            DetailScreen(pokemonState = state) { navHostController.navigateUp() }
+            DetailScreen(pokemonUi = state) { navHostController.navigateUp() }
         }
     }
 }

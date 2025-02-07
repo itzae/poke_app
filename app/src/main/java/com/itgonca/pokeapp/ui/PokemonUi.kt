@@ -22,7 +22,13 @@ import com.itgonca.pokeapp.ui.theme.RockColor
 import com.itgonca.pokeapp.ui.theme.SteelColor
 import com.itgonca.pokeapp.ui.theme.WaterColor
 
-data class PokemonState(
+sealed class PokemonState {
+    data object Loading : PokemonState()
+    data class Success(val state: List<PokemonUi>) : PokemonState()
+    data object Error : PokemonState()
+}
+
+data class PokemonUi(
     val name: String = "",
     val imageUrl: String = "",
     val types: List<PokemonType> = emptyList(),
@@ -34,7 +40,7 @@ data class StatsUi(val name: String, val value: String, val color: Color)
 
 
 fun Pokemon.toPokemonItemUi() = with(this) {
-    PokemonState(
+    PokemonUi(
         name = name,
         imageUrl = imageUrl,
         types = types.map { getPokemonType(it) }
@@ -42,7 +48,7 @@ fun Pokemon.toPokemonItemUi() = with(this) {
 }
 
 fun PokemonDetail.toDetailUi() = with(this) {
-    PokemonState(
+    PokemonUi(
         name = name,
         imageUrl = imageUrl,
         types = types.map { getPokemonType(it) },

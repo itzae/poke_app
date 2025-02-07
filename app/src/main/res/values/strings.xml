@@ -2,4 +2,8 @@
     <string name="app_name">Poke App</string>
     <string name="home_title_label">¿A quién buscaremos hoy?</string>
     <string name="detail_screen_title">Detalle</string>
+    <string name="error_title">Oops..</string>
+    <string name="error_description">Algo ha salido mal, intentalo más tarde.</string>
+    <string name="loading_title">Espera..</string>
+    <string name="loading_description">Estamos intentando cazar algún pokemon.</string>
 </resources>
