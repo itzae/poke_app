@@ -1,6 +1,7 @@
 package com.itgonca.pokeapp.ui.detail
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,13 +23,17 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.itgonca.pokeapp.R
 import com.itgonca.pokeapp.ui.PokemonState
 import com.itgonca.pokeapp.ui.components.ChipCustom
+import com.itgonca.pokeapp.ui.components.StatusBar
 import com.itgonca.pokeapp.ui.theme.PokeAppTheme
 
 @Composable
@@ -51,6 +56,7 @@ fun DetailScreen(
                     .padding(PokeAppTheme.dimens.space16),
                 elevation = CardDefaults.elevatedCardElevation(defaultElevation = PokeAppTheme.dimens.space8)
             ) {
+                //Name and type section
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -58,10 +64,10 @@ fun DetailScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = pokemonState.name,
+                        text = pokemonState.name.replaceFirstChar { it.uppercase() },
                         style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold)
                     )
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(PokeAppTheme.dimens.space8)) {
                         pokemonState.types.map {
                             ChipCustom(
                                 text = it.name,
@@ -70,25 +76,31 @@ fun DetailScreen(
                         }
                     }
                 }
+                //Stats and image section
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = PokeAppTheme.dimens.space16),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Column {
+                    Column(Modifier.fillMaxWidth(0.5f)) {
                         pokemonState.stats.map {
-                            Row(horizontalArrangement = Arrangement.spacedBy(PokeAppTheme.dimens.space16)) {
-                                Text(text = it.name)
-                                Text(text = it.value)
-                            }
+                            StatProgress(
+                                stat = it.name,
+                                value = it.value.toFloat(),
+                                color = it.color
+                            )
                         }
                     }
-                    AsyncImage(
-                        modifier = Modifier.size(100.dp),
-                        model = pokemonState.imageUrl,
-                        contentScale = ContentScale.Crop,
-                        contentDescription = ""
-                    )
+                    Box(Modifier.fillMaxWidth(0.5f)) {
+                        AsyncImage(
+                            modifier = Modifier.size(100.dp),
+                            model = pokemonState.imageUrl,
+                            contentScale = ContentScale.Crop,
+                            contentDescription = ""
+                        )
+                    }
                 }
             }
         }
@@ -103,7 +115,12 @@ fun TopAppBarPokemon(
 ) {
     TopAppBar(
         modifier = modifier,
-        title = { Text(text = "Detalle", color = MaterialTheme.colorScheme.onPrimary) },
+        title = {
+            Text(
+                text = stringResource(R.string.detail_screen_title),
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        },
         navigationIcon = {
             IconButton(onClick = onBack) {
                 Icon(
@@ -115,6 +132,14 @@ fun TopAppBarPokemon(
         },
         colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.primary)
     )
+}
+
+@Composable
+fun StatProgress(stat: String, value: Float, color: Color) {
+    Column {
+        Text(text = stat)
+        StatusBar(value = value, color = color)
+    }
 }
 
 

@@ -30,8 +30,7 @@ data class PokemonState(
 )
 
 data class PokemonType(val name: String, val color: Color)
-data class StatsUi(val name: String, val value: String)
-
+data class StatsUi(val name: String, val value: String, val color: Color)
 
 
 fun Pokemon.toPokemonItemUi() = with(this) {
@@ -47,8 +46,26 @@ fun PokemonDetail.toDetailUi() = with(this) {
         name = name,
         imageUrl = imageUrl,
         types = types.map { getPokemonType(it) },
-        stats = stats.map { StatsUi(name = it.name, value = it.value) }
+        stats = stats.map {
+            StatsUi(
+                name = it.name,
+                value = it.value,
+                color = getStatColor(it.name)
+            )
+        }
     )
+}
+
+fun getStatColor(type: String) = when (type) {
+    "hp" -> GrassColor
+    "attack" -> FireColor
+    "defense" -> ElectricColor
+    "special-attack" -> FightingColor
+    "special-defense" -> WaterColor
+    "speed" -> IceColor
+    "accuracy" -> BugColor
+    "evasion" -> PoisonColor
+    else -> Color.LightGray
 }
 
 fun getPokemonType(type: String) = when (type) {
