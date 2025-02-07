@@ -19,13 +19,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.itgonca.pokeapp.R
-import com.itgonca.pokeapp.domain.model.Pokemon
+import com.itgonca.pokeapp.ui.PokemonState
 import com.itgonca.pokeapp.ui.components.SearchTextField
 import com.itgonca.pokeapp.ui.theme.PokeAppTheme
-import com.itgonca.pokeapp.ui.theme.PokemonBlue
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, list: List<Pokemon>) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    list: List<PokemonState>,
+    onNavigateToDetail: (String) -> Unit = {}
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -40,7 +43,9 @@ fun HomeScreen(modifier: Modifier = Modifier, list: List<Pokemon>) {
                 PokemonItem(
                     modifier = Modifier.padding(PokeAppTheme.dimens.space8),
                     name = it.name,
-                    imageUrl = it.imageUrl
+                    imageUrl = it.imageUrl,
+                    types = it.types,
+                    onItemClick = onNavigateToDetail
                 )
             }
         }
@@ -53,7 +58,7 @@ private fun HomeHeader(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = PokemonBlue,
+                color = MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(
                     bottomStart = PokeAppTheme.dimens.cornerMedium,
                     bottomEnd = PokeAppTheme.dimens.cornerMedium

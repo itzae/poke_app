@@ -9,7 +9,7 @@ class GetPokemonListUseCase @Inject constructor(private val pokemonRepository: P
     operator fun invoke() = flow {
         val pokemonList = pokemonRepository.getPokemonsList().map {
             val result = pokemonRepository.getPokemonDetail(it.name)
-            Pokemon(name = result.name, imageUrl = result.imageUrl)
+            Pokemon(name = result.name, imageUrl = result.imageUrl, types = result.types)
         }
         emit(pokemonList)
     }

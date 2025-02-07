@@ -9,7 +9,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 
 private val DarkColorScheme = darkColorScheme(
-    primary = YellowPikachu,
+    primary = PokemonBlue,
+    onPrimary = Color.White,
     secondary = PokemonBlue,
     tertiary = Pink80,
     background = DeepBlack,
@@ -19,7 +20,8 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
+    primary = PokemonBlue,
+    onPrimary = Color.White,
     secondary = PurpleGrey40,
     tertiary = Pink40,
     background = GreyLight,
