@@ -2,7 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.jetbrainsKotlinSerialization)
     id("kotlin-kapt")
+    id("com.google.devtools.ksp")
     id("com.google.dagger.hilt.android")
 }
 
@@ -56,6 +58,7 @@ dependencies {
     implementation(libs.androidx.material3)
     //Load images from network
     implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
     //DI libraries
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
@@ -66,7 +69,12 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.logging.interceptor)
     implementation(libs.converter.gson)
-
+    implementation(libs.kotlinx.serialization.json)
+    //Room
+    implementation (libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+    //Test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

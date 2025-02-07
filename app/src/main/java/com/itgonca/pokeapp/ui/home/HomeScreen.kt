@@ -13,25 +13,48 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.itgonca.pokeapp.R
-import com.itgonca.pokeapp.domain.model.Pokemon
+import com.itgonca.pokeapp.ui.PokemonState
 import com.itgonca.pokeapp.ui.components.SearchTextField
 import com.itgonca.pokeapp.ui.theme.PokeAppTheme
-import com.itgonca.pokeapp.ui.theme.PokemonBlue
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier, list: List<Pokemon>) {
+fun HomeScreenRoute(
+    viewModel: HomeViewModel = hiltViewModel(),
+    onNavigateToDetail: (String) -> Unit
+) {
+    val pokemonList by viewModel.searchList.collectAsStateWithLifecycle()
+    val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
+    HomeScreen(
+        list = pokemonList,
+        query = searchQuery,
+        onSearch = { id -> viewModel.searchPokemon(id) },
+        onNavigateToDetail = onNavigateToDetail
+    )
+}
+
+@Composable
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    list: List<PokemonState>,
+    query: String = "",
+    onSearch: (String) -> Unit = {},
+    onNavigateToDetail: (String) -> Unit = {}
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.background)
     ) {
-        HomeHeader()
+        HomeHeader(query = query, onSearch = onSearch)
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             contentPadding = PaddingValues(PokeAppTheme.dimens.space8)
@@ -40,7 +63,9 @@ fun HomeScreen(modifier: Modifier = Modifier, list: List<Pokemon>) {
                 PokemonItem(
                     modifier = Modifier.padding(PokeAppTheme.dimens.space8),
                     name = it.name,
-                    imageUrl = it.imageUrl
+                    imageUrl = it.imageUrl,
+                    types = it.types,
+                    onItemClick = onNavigateToDetail
                 )
             }
         }
@@ -48,12 +73,17 @@ fun HomeScreen(modifier: Modifier = Modifier, list: List<Pokemon>) {
 }
 
 @Composable
-private fun HomeHeader(modifier: Modifier = Modifier) {
+private fun HomeHeader(
+    modifier: Modifier = Modifier,
+    query: String,
+    onSearch: (String) -> Unit = {}
+) {
+
     Column(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = PokemonBlue,
+                color = MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(
                     bottomStart = PokeAppTheme.dimens.cornerMedium,
                     bottomEnd = PokeAppTheme.dimens.cornerMedium
@@ -70,8 +100,10 @@ private fun HomeHeader(modifier: Modifier = Modifier) {
         SearchTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(PokeAppTheme.dimens.space16), query = ""
-        ) { }
+                .padding(PokeAppTheme.dimens.space16),
+            query = query,
+            onQueryChange = onSearch
+        )
 
     }
 }

@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Poke App</string>
     <string name="home_title_label">¿A quién buscaremos hoy?</string>
+    <string name="detail_screen_title">Detalle</string>
 </resources>
