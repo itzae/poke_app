@@ -69,7 +69,7 @@ La aplicación sigue los principios de Clean Architecture:
 1. **Clonar el Repositorio:**
 
    ```bash
-   git clone https://github.com/tuusuario/pokemon-clean-architecture-compose.git
+   git clone https://github.com/itzae/pokemon-clean-architecture-compose.git
 
 2. **Abrir el Proyecto en Android Studio:**
 
